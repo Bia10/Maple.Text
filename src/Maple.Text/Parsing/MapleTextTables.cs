@@ -142,7 +142,8 @@ internal static class MapleTextTables
 
     /// <summary>Returns the single MapleText code character for <paramref name="color"/>.</summary>
     internal static char ColorToCode(MapleTextColor color) =>
-        color switch {
+        color switch
+        {
             MapleTextColor.Blue => 'b',
             MapleTextColor.Red => 'r',
             MapleTextColor.Cyan => 'c',
@@ -155,7 +156,8 @@ internal static class MapleTextTables
 
     /// <summary>Returns the single MapleText code character for <paramref name="style"/>.</summary>
     internal static char StyleToCode(MapleTextStyle style) =>
-        style switch {
+        style switch
+        {
             MapleTextStyle.Bold => 'e',
             MapleTextStyle.Normal => 'n',
             MapleTextStyle.Small => 'f',

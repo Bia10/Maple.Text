@@ -43,8 +43,8 @@ csharp_style_namespace_declarations = file_scoped:warning
 # Throw expressions required
 csharp_style_throw_expression = true:error
 
-# Formatting is an error (not a warning)
-dotnet_diagnostic.IDE0055.severity = error
+# Formatting: IDE0055 disabled — CSharpier is the authoritative formatter
+dotnet_diagnostic.IDE0055.severity = none
 
 # Remove unused usings
 dotnet_diagnostic.IDE0005.severity = error

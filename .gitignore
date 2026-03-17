@@ -486,3 +486,4 @@ artifacts/
 
 # BenchmarkDotNet local output
 BenchmarkDotNet.Artifacts/
+.claude/settings.local.json

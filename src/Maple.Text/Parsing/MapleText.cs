@@ -148,7 +148,8 @@ public static class MapleText
     /// All cases use stackalloc to format the result — no heap allocation beyond the output string.
     /// </summary>
     public static string InsertLink(MapleTextLinkType linkType, long templateId, int josaSuffix = 0) =>
-        linkType switch {
+        linkType switch
+        {
             MapleTextLinkType.ItemName => FormatEntityToken('t', templateId),
             MapleTextLinkType.ItemNameAlt => FormatEntityToken('z', templateId),
             MapleTextLinkType.ItemIcon => FormatEntityToken('i', templateId),

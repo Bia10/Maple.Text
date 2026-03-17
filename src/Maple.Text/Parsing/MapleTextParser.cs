@@ -56,7 +56,8 @@ public static class MapleTextParser
                 if (index + 2 < span.Length && MapleTextTables.StyleCodes.Contains(span[index + 2]))
                 {
                     tokens.Add(
-                        new MapleTextToken {
+                        new MapleTextToken
+                        {
                             Kind = MapleTextTokenKind.StyleCode,
                             Code = span[index + 2],
                             Start = (ushort)index,
@@ -69,7 +70,8 @@ public static class MapleTextParser
                 else
                 {
                     tokens.Add(
-                        new MapleTextToken {
+                        new MapleTextToken
+                        {
                             Kind = MapleTextTokenKind.Escape,
                             Start = (ushort)index,
                             Length = 2,
@@ -84,7 +86,8 @@ public static class MapleTextParser
             if (MapleTextTables.IsLiteralHashSequence(next))
             {
                 tokens.Add(
-                    new MapleTextToken {
+                    new MapleTextToken
+                    {
                         Kind = MapleTextTokenKind.Text,
                         Start = (ushort)index,
                         Length = 1,
@@ -107,7 +110,8 @@ public static class MapleTextParser
                     continue;
                 }
                 tokens.Add(
-                    new MapleTextToken {
+                    new MapleTextToken
+                    {
                         Kind = MapleTextTokenKind.UnterminatedEntity,
                         Code = next,
                         Start = (ushort)index,
@@ -130,7 +134,8 @@ public static class MapleTextParser
                     continue;
                 }
                 tokens.Add(
-                    new MapleTextToken {
+                    new MapleTextToken
+                    {
                         Kind = MapleTextTokenKind.UnterminatedBlock,
                         Code = next,
                         Start = (ushort)index,
@@ -146,7 +151,8 @@ public static class MapleTextParser
             if (MapleTextTables.StyleCodes.Contains(next))
             {
                 tokens.Add(
-                    new MapleTextToken {
+                    new MapleTextToken
+                    {
                         Kind = MapleTextTokenKind.StyleCode,
                         Code = next,
                         Start = (ushort)index,
@@ -171,7 +177,8 @@ public static class MapleTextParser
                 {
                     // MBCS particle token: Code='\0', payload covers the whole nameSpan.
                     tokens.Add(
-                        new MapleTextToken {
+                        new MapleTextToken
+                        {
                             Kind = MapleTextTokenKind.ClientToken,
                             Code = '\0',
                             Start = (ushort)index,
@@ -188,7 +195,8 @@ public static class MapleTextParser
                 if (MapleTextTables.StatTokenLookup.Contains(nameSpan))
                 {
                     tokens.Add(
-                        new MapleTextToken {
+                        new MapleTextToken
+                        {
                             Kind = MapleTextTokenKind.StatToken,
                             Code = next,
                             Start = (ushort)index,
@@ -216,7 +224,8 @@ public static class MapleTextParser
 
                 // Unknown multi-letter token — consume only #X per client behaviour.
                 tokens.Add(
-                    new MapleTextToken {
+                    new MapleTextToken
+                    {
                         Kind = MapleTextTokenKind.UnknownCode,
                         Code = next,
                         Start = (ushort)index,
@@ -240,7 +249,8 @@ public static class MapleTextParser
 
             // Completely unknown token — consume #X.
             tokens.Add(
-                new MapleTextToken {
+                new MapleTextToken
+                {
                     Kind = MapleTextTokenKind.UnknownCode,
                     Code = next,
                     Start = (ushort)index,
@@ -264,7 +274,8 @@ public static class MapleTextParser
     {
         if (length > 0)
             tokens.Add(
-                new MapleTextToken {
+                new MapleTextToken
+                {
                     Kind = MapleTextTokenKind.Text,
                     Start = (ushort)start,
                     Length = (ushort)length,
@@ -298,7 +309,8 @@ public static class MapleTextParser
 
                 if (MapleTextTables.StatTokenLookup.Contains(nameSpan))
                 {
-                    token = new MapleTextToken {
+                    token = new MapleTextToken
+                    {
                         Kind = MapleTextTokenKind.StatToken,
                         Code = code,
                         Start = (ushort)index,
@@ -312,7 +324,8 @@ public static class MapleTextParser
 
                 if (MapleTextTables.ContainsNonAsciiLetter(nameSpan))
                 {
-                    token = new MapleTextToken {
+                    token = new MapleTextToken
+                    {
                         Kind = MapleTextTokenKind.ClientToken,
                         Code = '\0',
                         Start = (ushort)index,
@@ -333,13 +346,15 @@ public static class MapleTextParser
 
             // #X with no valid continuation.
             if (start >= span.Length || span[start] == '#' || MapleTextTables.IsLiteralHashSequence(span[start]))
-                token = new MapleTextToken {
+                token = new MapleTextToken
+                {
                     Kind = MapleTextTokenKind.Text,
                     Start = (ushort)index,
                     Length = 2,
                 };
             else
-                token = new MapleTextToken {
+                token = new MapleTextToken
+                {
                     Kind = MapleTextTokenKind.UnknownCode,
                     Code = code,
                     Start = (ushort)index,
@@ -358,7 +373,8 @@ public static class MapleTextParser
                 colonEnd++;
             if (colonEnd < span.Length && span[colonEnd] == '#')
             {
-                token = new MapleTextToken {
+                token = new MapleTextToken
+                {
                     Kind = MapleTextTokenKind.EntityReference,
                     Code = code,
                     Start = (ushort)index,
@@ -375,7 +391,8 @@ public static class MapleTextParser
         if (digitEnd >= span.Length || span[digitEnd] != '#')
             return false;
 
-        token = new MapleTextToken {
+        token = new MapleTextToken
+        {
             Kind = MapleTextTokenKind.EntityReference,
             Code = code,
             Start = (ushort)index,
@@ -408,7 +425,8 @@ public static class MapleTextParser
         bool hasCloser = end < span.Length && span[end] == '#';
         int length = end - index + (hasCloser ? 1 : 0);
 
-        token = new MapleTextToken {
+        token = new MapleTextToken
+        {
             Kind = MapleTextTokenKind.ClientToken,
             Code = code,
             Start = (ushort)index,
@@ -428,7 +446,8 @@ public static class MapleTextParser
         if (closeOffset < 0)
             return false;
         int blockEnd = searchFrom + closeOffset;
-        token = new MapleTextToken {
+        token = new MapleTextToken
+        {
             Kind = MapleTextTokenKind.Block,
             Code = span[index + 1],
             Start = (ushort)index,
