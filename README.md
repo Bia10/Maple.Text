@@ -5,6 +5,7 @@
 [![Build Status](https://github.com/Bia10/Maple.Text/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/Bia10/Maple.Text/actions/workflows/dotnet.yml)
 [![Nuget](https://img.shields.io/nuget/v/Maple.Text?color=purple)](https://www.nuget.org/packages/Maple.Text/)
 [![License](https://img.shields.io/github/license/Bia10/Maple.Text)](https://github.com/Bia10/Maple.Text/blob/main/LICENSE)
+[![codecov](https://codecov.io/gh/Bia10/Maple.Text/branch/main/graph/badge.svg)](https://codecov.io/gh/Bia10/Maple.Text)
 
 MapleStory rich-text parsing: zero-allocation tokenizer and stripper for MapleStory custom markup used in WZ quest/NPC dialogs. Cross-platform, trimmable and AOT/NativeAOT compatible.
 

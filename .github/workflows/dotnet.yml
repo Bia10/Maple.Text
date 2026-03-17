@@ -50,6 +50,37 @@ jobs:
       - name: Test (Maple.Text.XyzTest)
         run: dotnet run --project src/Maple.Text.XyzTest/Maple.Text.XyzTest.csproj -c ${{ matrix.configuration }} --no-build -- --no-ansi
 
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET (global.json)
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build -c Release --no-restore
+
+      - name: Install dotnet-coverage
+        run: dotnet tool install --global dotnet-coverage
+
+      - name: Collect coverage (Maple.Text.Test)
+        run: dotnet-coverage collect --output TestResults/coverage1.xml --output-format cobertura -- dotnet run --project src/Maple.Text.Test/Maple.Text.Test.csproj -c Release --no-build -- --no-ansi
+
+      - name: Collect coverage (Maple.Text.XyzTest)
+        run: dotnet-coverage collect --output TestResults/coverage2.xml --output-format cobertura -- dotnet run --project src/Maple.Text.XyzTest/Maple.Text.XyzTest.csproj -c Release --no-build -- --no-ansi
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: TestResults/coverage1.xml,TestResults/coverage2.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+
   format:
     runs-on: ubuntu-latest
     steps:
