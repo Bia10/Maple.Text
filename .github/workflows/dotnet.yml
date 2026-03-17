@@ -30,7 +30,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v4 # TODO: Pin to full SHA before merging to main
+      - uses: actions/checkout@v6 # TODO: Pin to full SHA before merging to main
 
       - name: Setup .NET (global.json)
         uses: actions/setup-dotnet@v4 # TODO: Pin to full SHA before merging to main
@@ -53,7 +53,7 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup .NET (global.json)
         uses: actions/setup-dotnet@v4
@@ -84,7 +84,7 @@ jobs:
   format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # TODO: Pin to full SHA
+      - uses: actions/checkout@v6 # TODO: Pin to full SHA
       - name: Setup .NET
         uses: actions/setup-dotnet@v4 # TODO: Pin to full SHA
         with:
@@ -101,7 +101,7 @@ jobs:
   pack:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4 # TODO: Pin to full SHA
+      - uses: actions/checkout@v6 # TODO: Pin to full SHA
         with:
           fetch-depth: 0 # full history for MinVer
       - name: Create tag (to set version)
@@ -129,7 +129,7 @@ jobs:
     if: ${{ github.event.inputs.version != '' && github.actor == 'Bia10' }}
 
     steps:
-      - uses: actions/checkout@v4 # TODO: Pin to full SHA
+      - uses: actions/checkout@v6 # TODO: Pin to full SHA
       - name: Download nuget packages
         uses: actions/download-artifact@v4 # TODO: Pin to full SHA
         with:
