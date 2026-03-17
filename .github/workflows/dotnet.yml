@@ -1,0 +1,112 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+name: dotnet
+
+permissions: read-all
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version to tag and create"
+        required: false
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  NuGetDirectory: ${{ github.workspace }}/nuget
+
+jobs:
+  build-and-test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        configuration: [Debug, Release]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4 # TODO: Pin to full SHA before merging to main
+
+      - name: Setup .NET (global.json)
+        uses: actions/setup-dotnet@v4 # TODO: Pin to full SHA before merging to main
+        with:
+          global-json-file: global.json
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build -c ${{ matrix.configuration }} --no-restore
+
+      # TUnit uses Microsoft.Testing.Platform (self-hosted runner) — run via dotnet run, not dotnet test
+      - name: Test (Maple.Text.Test)
+        run: dotnet run --project src/Maple.Text.Test/Maple.Text.Test.csproj -c ${{ matrix.configuration }} --no-build -- --no-ansi
+
+      - name: Test (Maple.Text.XyzTest)
+        run: dotnet run --project src/Maple.Text.XyzTest/Maple.Text.XyzTest.csproj -c ${{ matrix.configuration }} --no-build -- --no-ansi
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 # TODO: Pin to full SHA
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4 # TODO: Pin to full SHA
+        with:
+          global-json-file: global.json
+      - name: Restore tools
+        run: dotnet tool restore
+      - name: CSharpier verify no changes
+        run: dotnet csharpier --check .
+      - name: Format verify no changes
+        run: dotnet format --verify-no-changes
+
+  pack:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4 # TODO: Pin to full SHA
+        with:
+          fetch-depth: 0   # full history for MinVer
+      - name: Create tag (to set version)
+        if: ${{ github.event.inputs.version != '' && github.actor == 'Bia10' }}
+        run: git tag v${{ github.event.inputs.version }}
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4 # TODO: Pin to full SHA
+        with:
+          global-json-file: global.json
+      - name: Pack NuGet package
+        run: dotnet pack src/Maple.Text/Maple.Text.csproj -c Release --output ${{ env.NuGetDirectory }}
+      - uses: actions/upload-artifact@v4 # TODO: Pin to full SHA
+        with:
+          name: nuget
+          if-no-files-found: error
+          retention-days: 7
+          path: ${{ env.NuGetDirectory }}/*nupkg
+
+  create-release-push:
+    needs: [build-and-test, format, pack]
+    runs-on: windows-latest
+    permissions:
+      contents: write
+      id-token: write
+    if: ${{ github.event.inputs.version != '' && github.actor == 'Bia10' }}
+
+    steps:
+      - uses: actions/checkout@v4 # TODO: Pin to full SHA
+      - name: Download nuget packages
+        uses: actions/download-artifact@v4 # TODO: Pin to full SHA
+        with:
+          name: nuget
+          path: ${{ env.NuGetDirectory }}
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4 # TODO: Pin to full SHA
+        with:
+          global-json-file: global.json
+      - name: Push nupkg
+        run: dotnet nuget push ${{ env.NuGetDirectory }}/Maple.Text.${{ github.event.inputs.version }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Push snupkg
+        run: dotnet nuget push ${{ env.NuGetDirectory }}/Maple.Text.${{ github.event.inputs.version }}.snupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
