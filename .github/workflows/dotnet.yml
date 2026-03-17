@@ -62,15 +62,17 @@ jobs:
         run: dotnet tool restore
       - name: CSharpier verify no changes
         run: dotnet csharpier check .
-      - name: Format verify no changes
-        run: dotnet format --verify-no-changes
+      - name: Format style verify no changes
+        run: dotnet format style --verify-no-changes
+      - name: Format analyzers verify no changes
+        run: dotnet format analyzers --verify-no-changes
 
   pack:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4 # TODO: Pin to full SHA
         with:
-          fetch-depth: 0   # full history for MinVer
+          fetch-depth: 0 # full history for MinVer
       - name: Create tag (to set version)
         if: ${{ github.event.inputs.version != '' && github.actor == 'Bia10' }}
         run: git tag v${{ github.event.inputs.version }}

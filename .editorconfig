@@ -43,7 +43,8 @@ csharp_style_namespace_declarations = file_scoped:warning
 # Throw expressions required
 csharp_style_throw_expression = true:error
 
-# Formatting: IDE0055 disabled — CSharpier is the authoritative formatter
+# Formatting: CSharpier is the authoritative formatter (whitespace/brace style)
+# dotnet format runs style + analyzers only — whitespace check is skipped to avoid conflict
 dotnet_diagnostic.IDE0055.severity = none
 
 # Remove unused usings
