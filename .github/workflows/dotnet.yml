@@ -61,7 +61,7 @@ jobs:
       - name: Restore tools
         run: dotnet tool restore
       - name: CSharpier verify no changes
-        run: dotnet csharpier --check .
+        run: dotnet csharpier check .
       - name: Format verify no changes
         run: dotnet format --verify-no-changes
 

@@ -10,7 +10,7 @@ Thank you for considering contributing!
    ```shell
    dotnet build -c Release
    dotnet test
-   dotnet csharpier --check .
+   dotnet csharpier check .
    dotnet format --verify-no-changes
    ```
 4. Open a Pull Request against `main` with a clear description of the change.
@@ -19,7 +19,7 @@ Thank you for considering contributing!
 
 This project enforces formatting via **CSharpier** (opinionated C# formatter) and **`dotnet format`** (code style analyzers). CI will reject PRs with formatting violations.
 
-- **Auto-format before committing**: `dotnet csharpier .` (fixes whitespace/formatting) then `dotnet format` (fixes code style).
+- **Auto-format before committing**: `dotnet csharpier format .` (fixes whitespace/formatting) then `dotnet format` (fixes code style).
 - IDE integration: Install the CSharpier extension for [VS Code](https://marketplace.visualstudio.com/items?itemName=csharpier.csharpier-vscode), [Visual Studio](https://marketplace.visualstudio.com/items?itemName=csharpier.CSharpier), or [Rider](https://plugins.jetbrains.com/plugin/18243-csharpier) for format-on-save.
 
 ## Reporting Issues
