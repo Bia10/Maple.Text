@@ -503,4 +503,36 @@ public sealed class MapleTextBuilderTests
         builder.Append(longText);
         await Assert.That(builder.Build()).IsEqualTo(longText);
     }
+
+    // ── Write(ReadOnlySpan<char>) empty guard ─────────────────────────────────
+
+    [Test]
+    public async Task Append_EmptyString_IsIgnored()
+    {
+        // Append("") calls Write("".AsSpan()), taking the IsEmpty early-return in Write.
+        using var builder = new MapleTextBuilder();
+        builder.Append("A").Append("").Append("B");
+        await Assert.That(builder.Build()).IsEqualTo("AB");
+    }
+
+    // ── MapleTextTables.ColorToCode default case ──────────────────────────────
+
+    [Test]
+    public async Task OpenColor_UnknownEnumValue_FallsBackToDefaultK()
+    {
+        // ColorToCode(_) default arm returns 'k' for any unlisted MapleTextColor value.
+        using var builder = new MapleTextBuilder();
+        builder.OpenColor((MapleTextColor)255);
+        await Assert.That(builder.Build()).IsEqualTo("#k");
+    }
+
+    // ── Style(MapleTextStyle, string) null guard ──────────────────────────────
+
+    [Test]
+    public async Task Style_NullString_IsIgnored()
+    {
+        using var builder = new MapleTextBuilder();
+        builder.Style(MapleTextStyle.Bold, (string)null!);
+        await Assert.That(builder.Build()).IsEqualTo(string.Empty);
+    }
 }

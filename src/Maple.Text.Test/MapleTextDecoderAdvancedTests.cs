@@ -212,4 +212,22 @@ public sealed class MapleTextDecoderAdvancedTests
 
         public string ResolveClientToken(string value) => _resolved;
     }
+
+    // ── UnterminatedEntity ────────────────────────────────────────────────────
+
+    [Test]
+    public async Task Decode_UnterminatedEntity_IsStripped()
+    {
+        // "#t0" — entity code 't' with digit but no closing '#' → UnterminatedEntity(#t) + Text(0).
+        // The UnterminatedEntity token is stripped; only the trailing digit survives as Text.
+        await Assert.That(MapleTextDecoder.Decode("#t0")).IsEqualTo("0");
+    }
+
+    [Test]
+    public async Task Decode_UnterminatedBlock_IsStripped()
+    {
+        // "#D" alone — block code 'D' with no closing '#' → UnterminatedBlock only, no payload.
+        // The UnterminatedBlock token is stripped and there is no remaining content.
+        await Assert.That(MapleTextDecoder.Decode("#D")).IsEqualTo(string.Empty);
+    }
 }

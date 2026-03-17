@@ -1,0 +1,8 @@
+{
+  "coverage-gutters.coverageFileNames": [
+    "coverage.cobertura.xml"
+  ],
+  "coverage-gutters.coverageBaseDir": "TestResults",
+  "coverage-gutters.showLineCoverage": true,
+  "coverage-gutters.showRulerCoverage": true
+}
