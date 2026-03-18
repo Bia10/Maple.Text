@@ -106,6 +106,7 @@ jobs:
           fetch-depth: 0 # full history for MinVer
       - name: Create and push tag
         if: ${{ github.event.inputs.version != '' && github.actor == 'Bia10' }}
+        shell: bash
         run: |
           git tag v${{ github.event.inputs.version }} 2>/dev/null || echo "Tag already exists, skipping"
           git push origin v${{ github.event.inputs.version }} 2>/dev/null || echo "Tag already pushed, skipping"
