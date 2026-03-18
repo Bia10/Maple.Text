@@ -76,7 +76,7 @@ jobs:
         run: dotnet-coverage collect --output TestResults/coverage2.xml --output-format cobertura -- dotnet run --project src/Maple.Text.XyzTest/Maple.Text.XyzTest.csproj -c Release --no-build -- --no-ansi
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: TestResults/coverage1.xml,TestResults/coverage2.xml
           token: ${{ secrets.CODECOV_TOKEN }}
