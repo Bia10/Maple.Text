@@ -143,6 +143,8 @@ jobs:
         with:
           global-json-file: global.json
       - name: Push nupkg
+        shell: bash
         run: dotnet nuget push "${{ env.NuGetDirectory }}/Maple.Text.*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
       - name: Push snupkg
+        shell: bash
         run: dotnet nuget push "${{ env.NuGetDirectory }}/Maple.Text.*.snupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
