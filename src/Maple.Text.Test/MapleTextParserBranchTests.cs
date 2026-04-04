@@ -5,7 +5,7 @@ namespace Maple.Text.Test;
 /// <summary>
 /// Parser tests targeting branches not reached by the primary test suite,
 /// including argument guards, MBCS paths, entity-code edge cases, long-form token terminators,
-/// and the <see cref="ValueStringBuilder"/> Grow path.
+/// and the <see cref="Bia.ValueBuffers.ValueStringBuilder"/> Grow path.
 /// </summary>
 public sealed class MapleTextParserBranchTests
 {

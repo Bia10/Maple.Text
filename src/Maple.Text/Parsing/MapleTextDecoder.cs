@@ -1,4 +1,6 @@
-﻿namespace Maple.Text.Parsing;
+﻿using Bia.ValueBuffers;
+
+namespace Maple.Text.Parsing;
 
 /// <summary>
 /// Decodes a MapleText string into plain UTF-16 text by walking the token stream

@@ -48,7 +48,7 @@ public static class MapleText
     /// <summary>
     /// Decodes a MapleText string into plain UTF-16 text using an optional resolver
     /// for entity references, stat tokens, client tokens, and block tokens.
-    /// Output is accumulated into a <see cref="ValueStringBuilder"/> backed by a stack
+    /// Output is accumulated into a <see cref="Bia.ValueBuffers.ValueStringBuilder"/> backed by a stack
     /// buffer; a single heap allocation produces the final string.
     /// <para>
     /// When <paramref name="resolver"/> is null:
